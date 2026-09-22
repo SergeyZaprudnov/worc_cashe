@@ -43,7 +43,7 @@ class SubOperation(Base):
     """Подоперация"""
     __tablename__ = "suboperations"
 
-    id = Column(Integer, primary_key=True)"
+    id = Column(Integer, primary_key=True)
     category_id = Column(Integer, ForeignKey("operation_categories.id"), nullable=False, index=True)
     name = Column(String(100), nullable=False)
     unit = Column(String(100), nullable=False)
