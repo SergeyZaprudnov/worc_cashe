@@ -58,3 +58,25 @@ class SubOperation(Base):
     def __repr__(self):
         return f"<SubOperation({self.name}, price={self.price})>"
 
+class UserOperation(Base):
+    """Факт выполненой работы"""
+    __tablename__ = "user_operations"
+
+    id = Column(Integer, primary_key=True)
+    user_id = Column(Integer, ForeignKey("users.id"), nullable=False, index=True)
+    category_id = Column(Integer, ForeignKey("operation_categories.id"), nullable=False)
+    suboperation_id = Column(Integer, ForeignKey("suboperations.id"), nullable=False, index=True)
+    quantity = Column(Float, nullable=False)
+    order_number = Column(String(50), nullable=False, index=True)
+    order_date = Column(DateTime, nullable=False)
+    execution_date = Column(Date, nullable=False, default=date.today, index=True)
+    total_price = Column(Float, nullable=False, default=0)
+    created_at = Column(DateTime, default=datetime.utcnow)
+    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+
+    user = relationship("User", back_populates="operations")
+    category = relationship("OperationCategory", back_populates="user_operations")
+    suboperation = relationship("SubOperation", back_populates="user_operations")
+
+    def __repr__(self):
+        return f"<Op(user={self.user_id}, sub={self.suboperation_id}, qty={self.quantity})>"
