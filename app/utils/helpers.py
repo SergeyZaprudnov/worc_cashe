@@ -17,3 +17,20 @@ def format_currency(amount: float) -> str:
 def format_date_only(dt) -> str:
     return dt.strftime('%Y-%m-%d')
 
+def validate_quantity(value: str) -> float:
+    try:
+        q = float(str(value).replace(",", "."))
+    except ValueError:
+        raise ValueError(f"Некорректное колличество: {value}")
+    if q <= 0:
+        raise ValueError(f"Количество должно быть больше 0")
+    return q
+
+def validate_price(value: str) -> float:
+    try:
+        p = float(str(value).replace(",", "."))
+    except  ValueError:
+        raise ValueError(f"Некорректная цена: {value}")
+    if p <0:
+        raise ValueError("Цена не может быть отрицательной")
+    return p
