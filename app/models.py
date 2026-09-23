@@ -80,3 +80,21 @@ class UserOperation(Base):
 
     def __repr__(self):
         return f"<Op(user={self.user_id}, sub={self.suboperation_id}, qty={self.quantity})>"
+
+class WorkSession(Base):
+    __tablename__ = "work_sessions"
+
+    id = Column(Integer, primary_key=True)
+    user_id = Column(Integer, ForeignKey("users.id"), nullable=False, index=True)
+    start_time = Column(DateTime, nullable=False)
+    end_time = Column(DateTime)
+    is_active = Column(Boolean, default=True)
+    created_at = Column(DateTime, default=datetime.utcnow)
+    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    user = relationship("User", back_populates="work_sessions")
+
+    @property
+    def duratuion(self):
+        if self.end_time - self.start_time:
+            return self.end_time - self.start_time
+        return None
